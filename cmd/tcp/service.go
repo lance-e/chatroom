@@ -3,9 +3,9 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"github.com/google/uuid"
 	"log"
 	"net"
-	"strconv"
 	"time"
 )
 
@@ -30,7 +30,7 @@ func main() {
 
 // User 用户信息
 type User struct {
-	ID            int
+	ID            string
 	Address       string
 	EnterAt       time.Time
 	MessageChanel chan string
@@ -77,21 +77,21 @@ func handleConn(conn net.Conn) {
 	//2.启动一个给用户发送消息的协程，
 	go sendMessage(conn, user.MessageChanel)
 	//3.给新进入的用户发送信息，以及给其他用户通知
-	user.MessageChanel <- "welcome " + user.String()
-	messageChanel <- "user:" + strconv.Itoa(user.ID) + "entering"
+	user.MessageChanel <- "welcome " + user.ID
+	messageChanel <- "user:" + user.ID + "entering"
 	//4.将新进入的用户加入全部用户列表中，避免加锁
 	enteringChanel <- user
 	//5.循环读取用户发送的消息
 	input := bufio.NewScanner(conn)
 	for input.Scan() {
-		messageChanel <- strconv.Itoa(user.ID) + ":" + input.Text()
+		messageChanel <- user.ID + ":" + input.Text()
 	}
 	if err := input.Err(); err != nil {
 		log.Println("读取错误:%v", err)
 	}
 	//6.用户退出
 	leavingChanel <- user
-	messageChanel <- "user:" + strconv.Itoa(user.ID) + "has left"
+	messageChanel <- "user:" + user.ID + "has left"
 }
 
 // sendMessage 给其他用户发送消息
@@ -102,6 +102,6 @@ func sendMessage(conn net.Conn, messageChanel <-chan string) {
 }
 
 // GenUserId 生成用户id
-func GenUserId() int {
-
+func GenUserId() string {
+	return uuid.New().String()
 }
