@@ -13,14 +13,15 @@ func main() {
 		panic(err)
 	}
 
-	defer conn.Close()
 	done := make(chan struct{})
+	//开启一个等待服务关闭的协程
 	go func() {
-		io.Copy(os.Stdout, conn) //通过标准输出，从连接读取
+		io.Copy(os.Stdout, conn) //从连接读到标准输出
 		log.Println("done")
-		done <- struct{}{}
+		done <- struct{}{} //给主协程发送信号
 	}()
 	mustCopy(conn, os.Stdin) //通过标准输入写入连接
+	conn.Close()
 	<-done
 
 }

@@ -14,13 +14,14 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	//广播
 	go broadCaster()
 
 	for {
 
 		conn, err := listener.Accept()
 		if err != nil {
-			log.Fatalf("错误：%v", err)
+			log.Println("错误：%v", err)
 			continue
 		}
 		go handleConn(conn)
@@ -37,9 +38,9 @@ type User struct {
 }
 
 var (
-	messageChanel  = make(chan string) //全局通信通道
-	enteringChanel = make(chan *User)  //进入的用户
-	leavingChanel  = make(chan *User)  //退出的用户
+	messageChanel  = make(chan string, 8) //全局通信通道
+	enteringChanel = make(chan *User)     //进入的用户
+	leavingChanel  = make(chan *User)     //退出的用户
 
 )
 
@@ -48,19 +49,21 @@ var (
 func broadCaster() {
 	var users = make(map[*User]struct{})
 
-	select {
-	case user := <-enteringChanel:
-		//新用户进入
-		users[user] = struct{}{}
-	case user := <-leavingChanel:
-		//用户退出，删除用户
-		delete(users, user)
-		//关闭通道，防止goroutine溢出
-		close(user.MessageChanel)
-	case message := <-messageChanel:
-		for user := range users {
-			//给其他用户发送消息
-			user.MessageChanel <- message
+	for {
+		select {
+		case user := <-enteringChanel:
+			//新用户进入
+			users[user] = struct{}{}
+		case user := <-leavingChanel:
+			//用户退出，删除用户
+			delete(users, user)
+			//关闭通道，防止goroutine溢出
+			close(user.MessageChanel)
+		case message := <-messageChanel:
+			for user := range users {
+				//给其他用户发送消息
+				user.MessageChanel <- message
+			}
 		}
 	}
 
@@ -77,8 +80,8 @@ func handleConn(conn net.Conn) {
 	//2.启动一个给用户发送消息的协程，
 	go sendMessage(conn, user.MessageChanel)
 	//3.给新进入的用户发送信息，以及给其他用户通知
-	user.MessageChanel <- "welcome " + user.ID
-	messageChanel <- "user:" + user.ID + "entering"
+	user.MessageChanel <- "welcome user:" + user.ID
+	messageChanel <- "user:`" + user.ID + "` entering"
 	//4.将新进入的用户加入全部用户列表中，避免加锁
 	enteringChanel <- user
 	//5.循环读取用户发送的消息
