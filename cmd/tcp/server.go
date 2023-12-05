@@ -80,7 +80,7 @@ func handleConn(conn net.Conn) {
 	//2.启动一个给用户发送消息的协程，
 	go sendMessage(conn, user.MessageChanel)
 	//3.给新进入的用户发送信息，以及给其他用户通知
-	user.MessageChanel <- "welcome user:" + user.ID
+	user.MessageChanel <- "welcome user: " + user.String()
 	messageChanel <- "user:`" + user.ID + "` entering"
 	//4.将新进入的用户加入全部用户列表中，避免加锁
 	enteringChanel <- user
@@ -107,4 +107,7 @@ func sendMessage(conn net.Conn, messageChanel <-chan string) {
 // GenUserId 生成用户id
 func GenUserId() string {
 	return uuid.New().String()
+}
+func (user *User) String() string {
+	return " UID:" + user.ID + " address: " + user.Address + " enterAt " + user.EnterAt.String()
 }

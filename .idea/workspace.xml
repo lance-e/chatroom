@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1bbdb9f7-0cbe-44f2-9d96-ef2623ad2aad" name="Changes" comment="fix and add client">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/tcp/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/tcp/client.go" afterDir="false" />
+    <list default="true" id="1bbdb9f7-0cbe-44f2-9d96-ef2623ad2aad" name="Changes" comment="fix:other client can't receive message">
       <change beforePath="$PROJECT_DIR$/cmd/tcp/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/tcp/server.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -94,7 +92,8 @@
     <MESSAGE value="add:chat room base on tcp" />
     <MESSAGE value="fix:import uuid" />
     <MESSAGE value="fix and add client" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix and add client" />
+    <MESSAGE value="fix:other client can't receive message" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix:other client can't receive message" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
