@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1bbdb9f7-0cbe-44f2-9d96-ef2623ad2aad" name="Changes" comment="start">
-      <change afterPath="$PROJECT_DIR$/cmd/tcp/service.go" afterDir="false" />
+    <list default="true" id="1bbdb9f7-0cbe-44f2-9d96-ef2623ad2aad" name="Changes" comment="add:function">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/tcp/service.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/tcp/service.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,7 +89,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="start" />
-    <option name="LAST_COMMIT_MESSAGE" value="start" />
+    <MESSAGE value="add:function" />
+    <option name="LAST_COMMIT_MESSAGE" value="add:function" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

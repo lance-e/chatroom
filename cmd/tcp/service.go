@@ -9,23 +9,12 @@ import (
 	"time"
 )
 
-// User 用户信息
-type User struct {
-	ID            int
-	Address       string
-	EnterAt       time.Time
-	MessageChanel chan string
-}
-
-var messageChanel chan string //全局通信通道
-var enteringChanel chan *User //进入的用户
-var leavingChanel chan *User  //退出的用户
 func main() {
 	listener, err := net.Listen("tcp", "127.0.0.1:2020")
 	if err != nil {
 		panic(err)
 	}
-	go broadCast()
+	go broadCaster()
 
 	for {
 
@@ -39,9 +28,41 @@ func main() {
 	}
 }
 
+// User 用户信息
+type User struct {
+	ID            int
+	Address       string
+	EnterAt       time.Time
+	MessageChanel chan string
+}
+
+var (
+	messageChanel  = make(chan string) //全局通信通道
+	enteringChanel = make(chan *User)  //进入的用户
+	leavingChanel  = make(chan *User)  //退出的用户
+
+)
+
 // broadCast 记录用户信息，广播信息
-// 新用户进入，普通用户，用户退出
-func broadCast() {
+// 1.新用户进入，2.普通用户消息，3.用户退出
+func broadCaster() {
+	var users = make(map[*User]struct{})
+
+	select {
+	case user := <-enteringChanel:
+		//新用户进入
+		users[user] = struct{}{}
+	case user := <-leavingChanel:
+		//用户退出，删除用户
+		delete(users, user)
+		//关闭通道，防止goroutine溢出
+		close(user.MessageChanel)
+	case message := <-messageChanel:
+		for user := range users {
+			//给其他用户发送消息
+			user.MessageChanel <- message
+		}
+	}
 
 }
 func handleConn(conn net.Conn) {
@@ -76,6 +97,11 @@ func handleConn(conn net.Conn) {
 // sendMessage 给其他用户发送消息
 func sendMessage(conn net.Conn, messageChanel <-chan string) {
 	for message := range messageChanel {
-		fmt.Sprintf("message:%v", message)
+		fmt.Fprintln(conn, message)
 	}
+}
+
+// GenUserId 生成用户id
+func GenUserId() int {
+
 }
