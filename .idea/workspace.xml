@@ -4,17 +4,7 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1bbdb9f7-0cbe-44f2-9d96-ef2623ad2aad" name="Changes" comment="fix:this is the simple chatroom implement">
-      <change afterPath="$PROJECT_DIR$/cmd/chatroom/main.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logic/broadcast.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logic/message.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logic/user.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/handle.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/home.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/websocket.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" />
-    </list>
+    <list default="true" id="1bbdb9f7-0cbe-44f2-9d96-ef2623ad2aad" name="Changes" comment="add:the basic framework" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -121,7 +111,8 @@
     <MESSAGE value="add:websocket client" />
     <MESSAGE value="add:implement by two library" />
     <MESSAGE value="fix:this is the simple chatroom implement" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix:this is the simple chatroom implement" />
+    <MESSAGE value="add:the basic framework" />
+    <option name="LAST_COMMIT_MESSAGE" value="add:the basic framework" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
