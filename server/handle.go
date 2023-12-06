@@ -1,7 +1,6 @@
 package server
 
 import (
-	"chatroom/logic"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -14,7 +13,7 @@ func RegisterHandle() {
 	//负责推断出项目根目录
 	inferRootDir()
 	//接收广播消息
-	go logic.broadCast.Start()
+	//go logic.broadCast.Start()
 
 	http.HandleFunc("/", homeHandleFunc)
 	http.HandleFunc("/ws", websocketHandleFunc)
