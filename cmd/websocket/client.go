@@ -12,7 +12,7 @@ import (
 func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 	defer cancel()
-	conn, _, err := websocket.Dial(ctx, "ws://127.0.0.1:2001/ws", nil)
+	conn, _, err := websocket.Dial(ctx, "ws://localhost:2001/ws", nil)
 	if err != nil {
 		log.Println(err)
 		return

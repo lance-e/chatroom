@@ -4,8 +4,13 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1bbdb9f7-0cbe-44f2-9d96-ef2623ad2aad" name="Changes" comment="add:websocket server">
-      <change afterPath="$PROJECT_DIR$/cmd/websocket/client.go" afterDir="false" />
+    <list default="true" id="1bbdb9f7-0cbe-44f2-9d96-ef2623ad2aad" name="Changes" comment="add:websocket client">
+      <change afterPath="$PROJECT_DIR$/cmd/websocket/serverByGorilla.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/websocket/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/websocket/client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/websocket/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/websocket/serverByNhooyr.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,7 +99,8 @@
     <MESSAGE value="fix and add client" />
     <MESSAGE value="fix:other client can't receive message" />
     <MESSAGE value="add:websocket server" />
-    <option name="LAST_COMMIT_MESSAGE" value="add:websocket server" />
+    <MESSAGE value="add:websocket client" />
+    <option name="LAST_COMMIT_MESSAGE" value="add:websocket client" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

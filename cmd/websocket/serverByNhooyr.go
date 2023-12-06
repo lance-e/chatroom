@@ -42,6 +42,6 @@ func main() {
 		conn.Close(websocket.StatusNormalClosure, "")
 
 	})
-	log.Fatal(http.ListenAndServe("2001", nil))
+	log.Fatal(http.ListenAndServe(":2001", nil))
 
 }
