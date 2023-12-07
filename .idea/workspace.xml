@@ -4,12 +4,9 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1bbdb9f7-0cbe-44f2-9d96-ef2623ad2aad" name="Changes" comment="add:the core function">
+    <list default="true" id="1bbdb9f7-0cbe-44f2-9d96-ef2623ad2aad" name="Changes" comment="add:more details">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logic/broadcast.go" beforeDir="false" afterPath="$PROJECT_DIR$/logic/broadcast.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logic/message.go" beforeDir="false" afterPath="$PROJECT_DIR$/logic/message.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logic/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/logic/user.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/websocket.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/websocket.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,7 +119,8 @@
     <MESSAGE value="add:the basic framework" />
     <MESSAGE value="add:the frontend" />
     <MESSAGE value="add:the core function" />
-    <option name="LAST_COMMIT_MESSAGE" value="add:the core function" />
+    <MESSAGE value="add:more details" />
+    <option name="LAST_COMMIT_MESSAGE" value="add:more details" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
