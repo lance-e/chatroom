@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1bbdb9f7-0cbe-44f2-9d96-ef2623ad2aad" name="Changes" comment="add:the frontend">
+    <list default="true" id="1bbdb9f7-0cbe-44f2-9d96-ef2623ad2aad" name="Changes" comment="add:the core function">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logic/broadcast.go" beforeDir="false" afterPath="$PROJECT_DIR$/logic/broadcast.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logic/message.go" beforeDir="false" afterPath="$PROJECT_DIR$/logic/message.go" afterDir="false" />
@@ -121,7 +121,8 @@
     <MESSAGE value="fix:this is the simple chatroom implement" />
     <MESSAGE value="add:the basic framework" />
     <MESSAGE value="add:the frontend" />
-    <option name="LAST_COMMIT_MESSAGE" value="add:the frontend" />
+    <MESSAGE value="add:the core function" />
+    <option name="LAST_COMMIT_MESSAGE" value="add:the core function" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
