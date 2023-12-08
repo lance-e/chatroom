@@ -4,13 +4,8 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1bbdb9f7-0cbe-44f2-9d96-ef2623ad2aad" name="Changes" comment="add:sensitive filter and more detail">
-      <change afterPath="$PROJECT_DIR$/logic/offline.go" afterDir="false" />
+    <list default="true" id="1bbdb9f7-0cbe-44f2-9d96-ef2623ad2aad" name="Changes" comment="add:save the history message and more details">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/chatroom.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/chatroom.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/global/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/global/config.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logic/broadcast.go" beforeDir="false" afterPath="$PROJECT_DIR$/logic/broadcast.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logic/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/logic/user.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,7 +34,7 @@
   <component name="GithubPullRequestsUISettings">
     <option name="selectedUrlAndAccountId">
       <UrlAndAccount>
-        <option name="accountId" value="ae8fd840-6fae-4404-a8a8-311fa0d8aa96" />
+        <option name="accountId" value="d63ad727-f8e8-4279-b886-8a94c788d7ed" />
         <option name="url" value="https://github.com/lance547/chatroom.git" />
       </UrlAndAccount>
     </option>
@@ -138,7 +133,8 @@
     <MESSAGE value="add:the core function" />
     <MESSAGE value="add:more details" />
     <MESSAGE value="add:sensitive filter and more detail" />
-    <option name="LAST_COMMIT_MESSAGE" value="add:sensitive filter and more detail" />
+    <MESSAGE value="add:save the history message and more details" />
+    <option name="LAST_COMMIT_MESSAGE" value="add:save the history message and more details" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

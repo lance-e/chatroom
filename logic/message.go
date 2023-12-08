@@ -29,6 +29,7 @@ func NewMessage(user *User, content string) *Message {
 	return &Message{
 		User:    user,
 		Content: content,
+		Type:    MsgTypeNormal,
 	}
 }
 
