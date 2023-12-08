@@ -46,6 +46,7 @@ func (b *broadCaster) Start() {
 		case msg := <-b.messageChanel:
 			//给所有用户发送消息
 			for _, user := range b.users {
+				//排除自己
 				if msg.User.UID == user.UID {
 					continue
 				}
@@ -68,12 +69,12 @@ func (b *broadCaster) CanEnterRoom(name string) bool {
 }
 
 // BroadCast 用于广播信息
-func (b *broadCaster) BroadCast(msg string) {
-
+func (b *broadCaster) BroadCast(msg *Message) {
+	b.messageChanel <- msg
 }
 func (b *broadCaster) UserEntering(user *User) {
-	b.users[user.NickName] = user
+	b.enteringChanel <- user
 }
 func (b *broadCaster) UserLeaving(user *User) {
-	delete(b.users, user.NickName)
+	b.leavingChanel <- user
 }
