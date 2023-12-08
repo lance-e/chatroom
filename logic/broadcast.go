@@ -37,6 +37,7 @@ func (b *broadCaster) Start() {
 			//新用户进入
 			b.users[user.NickName] = user
 			b.sendUserList()
+			OfflineProcessor.Send(user)
 		case user := <-b.leavingChanel:
 			//用户离开
 			delete(b.users, user.NickName)
@@ -52,6 +53,7 @@ func (b *broadCaster) Start() {
 				}
 				user.MessageChanel <- msg
 			}
+			OfflineProcessor.Save(msg)
 		case nickname := <-b.checkUserChanel:
 			_, ok := b.users[nickname]
 			if !ok {

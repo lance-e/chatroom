@@ -2,9 +2,17 @@ package logic
 
 import (
 	"context"
+	"crypto/hmac"
+	"crypto/sha256"
+	"encoding/base64"
 	"errors"
+	"fmt"
 	"github.com/gorilla/websocket"
+	"github.com/spf13/cast"
+	"github.com/spf13/viper"
 	"regexp"
+	"strings"
+	"sync/atomic"
 	"time"
 )
 
@@ -29,7 +37,7 @@ var System = &User{}
 
 // NewUser 新建一个user实例
 func NewUser(conn *websocket.Conn, nickname string, token string, addr string) *User {
-	newUser := &User{
+	user := &User{
 		NickName:      nickname,
 		EnterAt:       time.Now(),
 		Token:         token,
@@ -37,12 +45,18 @@ func NewUser(conn *websocket.Conn, nickname string, token string, addr string) *
 		MessageChanel: make(chan *Message, 8),
 		Conn:          conn,
 	}
-	if newUser.Token != "" {
-
+	if user.Token != "" {
+		uid, err := parseTokenAndValid(user.Token, user.NickName)
+		if err == nil {
+			user.UID = uid
+		}
 	}
-	if newUser.UID == 0 {
-
+	if user.UID == 0 {
+		user.UID = int(atomic.AddInt32(&globalUID, 1))
+		user.Token = genToken(user.UID, user.NickName)
+		user.IsBool = true
 	}
+	return user
 }
 func (u *User) SendMessage(ctx context.Context) {
 	for msg := range u.MessageChanel {
@@ -73,4 +87,48 @@ func (u *User) ReceiveMessage(ctx context.Context) error {
 		BroadCaster.BroadCast(msg)
 	}
 
+}
+
+// genToken 生成token
+func genToken(uid int, nickname string) string {
+	secret := viper.GetString("token-secret")               //获取密钥
+	message := fmt.Sprintf("%s%s%d", nickname, secret, uid) //先将nickname，secret，uid拼接
+
+	messageMac := macSHA256([]byte(message), []byte(secret)) //使用hmac-SHA256加密
+
+	token := fmt.Sprintf("%suid%d", base64.StdEncoding.EncodeToString(messageMac), uid) //再将加密后的token再拼接uid
+	return token
+
+}
+
+// macSHA256 hmac-SHA256加密
+func macSHA256(msg, secret []byte) []byte {
+	mac := hmac.New(sha256.New, secret)
+	mac.Write(msg)
+	return mac.Sum(nil)
+}
+
+// parseTokenAndValid 解析token内容，分析是否有效,返回UID和error
+func parseTokenAndValid(token string, nickname string) (int, error) {
+	//获取token中的信息
+
+	index := strings.LastIndex(token, "uid")
+	messageMac, err := base64.StdEncoding.DecodeString(token[:index]) //对genToken中的messageMac进行解码
+	if err != nil {
+		return 0, err
+	}
+
+	uid := cast.ToInt(token[index+3:]) // 获取token中的uid信息
+
+	secret := viper.GetString("token-secret")
+	message := fmt.Sprintf("%s%s%d", nickname, secret, uid) //先将nickname，secret，uid拼接
+
+	//进行token校验
+	mac := hmac.New(sha256.New, []byte(secret))
+	mac.Write([]byte(message))
+	hash := mac.Sum(nil)
+	if ok := hmac.Equal(messageMac, hash); ok {
+		return uid, nil
+	}
+	return 0, errors.New("this token is illegal")
 }

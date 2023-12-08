@@ -13,11 +13,12 @@ func initConfig() {
 	viper.SetConfigFile("./config/chatroom.yaml")
 	viper.SetConfigName("chatroom")
 	viper.SetConfigType("yaml")
-	viper.AddConfigPath("./config")
+	viper.AddConfigPath(RootDir + "/config")
 	if err := viper.ReadInConfig(); err != nil {
 		panic(err)
 	}
 	SensitiveWords = viper.GetStringSlice("sensitive")
+	//监控配置文件
 	viper.WatchConfig()
 	viper.OnConfigChange(func(in fsnotify.Event) {
 		viper.ReadInConfig()

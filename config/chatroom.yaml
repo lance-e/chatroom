@@ -4,3 +4,7 @@ sensitive:
   我操
   傻子
   黄色
+token-secret: this is token secret
+
+offline-number: 10
+
