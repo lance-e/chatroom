@@ -25,7 +25,7 @@ func main() {
 	聊天室
 `
 	)
-	fmt.Printf(banner+"start on %s", addr)
+	fmt.Printf(banner+"start on %s\n", addr)
 
 	server.RegisterHandle()
 

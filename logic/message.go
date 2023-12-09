@@ -7,7 +7,7 @@ import (
 
 const (
 	MsgTypeNormal = iota
-	MsgTypeSystem
+	MsgTypeWelcome
 	MsgTypeEnter
 	MsgTypeLeave
 	MsgTypeError
@@ -42,7 +42,7 @@ func NewMessage(user *User, content string, clientTime string) *Message {
 func NewWelcomeMessage(user *User) *Message {
 	return &Message{
 		User:    user,
-		Type:    MsgTypeSystem,
+		Type:    MsgTypeWelcome,
 		Content: "欢迎来到聊天室:" + user.NickName,
 		MsgTime: time.Now(),
 	}
@@ -68,8 +68,8 @@ func NewUserLeaveMessage(user *User) *Message {
 	}
 }
 
-// ErrorMessage 返回错误信息
-func ErrorMessage(content string) *Message {
+// NewErrorMessage 返回错误信息
+func NewErrorMessage(content string) *Message {
 	return &Message{
 		User:    System,
 		Type:    MsgTypeError,

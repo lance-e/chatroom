@@ -6,32 +6,32 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
+	"github.com/google/uuid"
 	"github.com/gorilla/websocket"
 	"github.com/spf13/cast"
 	"github.com/spf13/viper"
 	"io"
 	"regexp"
 	"strings"
-	"sync/atomic"
 	"time"
 )
 
 var globalUID uint32 = 0
 
 type User struct {
-	UID           int           `json:"uid"`
-	NickName      string        `json:"nickname"`
-	EnterAt       time.Time     `json:"enter_at"`
-	Addr          string        `json:"addr"`
-	MessageChanel chan *Message `json:"-"`
+	UID            int           `json:"uid"`
+	NickName       string        `json:"nickname"`
+	EnterAt        time.Time     `json:"enter_at"`
+	Addr           string        `json:"addr"`
+	MessageChannel chan *Message `json:"-"`
 
 	//token 进行用户校验
 	Token string `json:"token"`
 
 	//isBool 判断用户是否是第一次进入聊天室
-	IsBool bool `json:"is_bool"`
+	isNew bool
 
-	Conn *websocket.Conn
+	conn *websocket.Conn
 }
 
 // 系统用户 ， 代表系统发送的信息
@@ -40,12 +40,12 @@ var System = &User{}
 // NewUser 新建一个user实例
 func NewUser(conn *websocket.Conn, nickname string, token string, addr string) *User {
 	user := &User{
-		NickName:      nickname,
-		EnterAt:       time.Now(),
-		Token:         token,
-		Addr:          addr,
-		MessageChanel: make(chan *Message, 8),
-		Conn:          conn,
+		NickName:       nickname,
+		EnterAt:        time.Now(),
+		Token:          token,
+		Addr:           addr,
+		MessageChannel: make(chan *Message, 32),
+		conn:           conn,
 	}
 	if user.Token != "" {
 		uid, err := parseTokenAndValid(user.Token, user.NickName)
@@ -54,26 +54,30 @@ func NewUser(conn *websocket.Conn, nickname string, token string, addr string) *
 		}
 	}
 	if user.UID == 0 {
-		user.UID = int(atomic.AddUint32(&globalUID, 1))
+		//使用uuid库来生成uid吧
+		UUID, _ := uuid.NewUUID()
+		user.UID = int(UUID.ID())
+
+		//user.UID = int(atomic.AddUint32(&globalUID, 1))
 		user.Token = genToken(user.UID, user.NickName)
-		user.IsBool = true
+		user.isNew = true
+
 	}
 	return user
 }
 func (u *User) SendMessage() {
-	for msg := range u.MessageChanel {
-		u.Conn.WriteJSON(msg)
+	for msg := range u.MessageChannel {
+		_ = u.conn.WriteJSON(msg)
 	}
 }
 func (u *User) ReceiveMessage() error {
-	var (
-		receiveMsg map[string]string
-		err        error
-	)
+	var receiveMsg map[string]string
+	var err error
 	for {
-		err = u.Conn.ReadJSON(&receiveMsg)
+		err = u.conn.ReadJSON(&receiveMsg)
+
 		if err != nil {
-			var closeErr websocket.CloseError
+			var closeErr *websocket.CloseError
 			if errors.As(err, &closeErr) {
 				return nil
 			} else if errors.Is(err, io.EOF) {
@@ -83,7 +87,7 @@ func (u *User) ReceiveMessage() error {
 		}
 		//内容发送到聊天室
 		msg := NewMessage(u, receiveMsg["content"], receiveMsg["send_time"])
-		FilterSensitive(msg.Content) //敏感词汇过滤
+		msg.Content = FilterSensitive(msg.Content) //敏感词汇过滤
 		//解析 content ，看看@了谁
 		reg := regexp.MustCompile(`@[^\s@]{4,20}`) //?????????
 		msg.Ats = reg.FindAllString(msg.Content, -1)
@@ -95,7 +99,7 @@ func (u *User) ReceiveMessage() error {
 
 // CloseMessageChanel 用于关闭消息通道,避免goroutine泄露
 func (u *User) CloseMessageChanel() {
-	close(u.MessageChanel)
+	close(u.MessageChannel)
 }
 
 // genToken 生成token

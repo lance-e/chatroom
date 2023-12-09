@@ -1,10 +1,11 @@
 sensitive:
-  你妈
-  傻逼
-  我操
-  傻子
-  黄色
+ 你妈
+ 傻逼
+ 我操
+ 傻子
+ 黄色
 token-secret: abcdefg
 
-offline-number: 10
+offline-num: 10
 
+message-queue: 1024

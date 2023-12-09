@@ -32,14 +32,14 @@ func websocketHandleFunc(writer http.ResponseWriter, request *http.Request) {
 	//对昵称长度进行判断
 	if len(nickname) < 4 || len(nickname) > 20 {
 		log.Println("nickname illegal :", nickname)
-		conn.WriteJSON("非法昵称，昵称长度应为4-20")
+		conn.WriteJSON(logic.NewErrorMessage("非法昵称，昵称长度应为4-20"))
 		conn.Close()
 		return
 	}
 
 	if !logic.BroadCaster.CanEnterRoom(nickname) {
 		log.Println("昵称已存在", nickname)
-		conn.WriteJSON("该昵称已存在，请更换昵称")
+		conn.WriteJSON(logic.NewErrorMessage("用户名已存在，换一个名字吧"))
 		conn.Close()
 		return
 	}
@@ -50,7 +50,7 @@ func websocketHandleFunc(writer http.ResponseWriter, request *http.Request) {
 	go userHasToken.SendMessage()
 
 	//给新用户发送欢迎信息
-	userHasToken.MessageChanel <- logic.NewWelcomeMessage(userHasToken)
+	userHasToken.MessageChannel <- logic.NewWelcomeMessage(userHasToken)
 
 	//避免token泄露，在这里进行token处理
 	temUser := *userHasToken
@@ -67,12 +67,14 @@ func websocketHandleFunc(writer http.ResponseWriter, request *http.Request) {
 
 	//接收用户消息
 	err = user.ReceiveMessage()
+
 	// 用户离开,给所有用户发送用户离开聊天室的信息
 	logic.BroadCaster.UserLeaving(user)
 	msg = logic.NewUserLeaveMessage(user)
 	logic.BroadCaster.BroadCast(msg)
 	log.Println("user: `" + nickname + "` leaves chat")
-	//关闭
+
+	//关闭连接
 	if err == nil {
 		log.Println("connection close...")
 		conn.Close()

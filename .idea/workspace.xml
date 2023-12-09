@@ -4,17 +4,19 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1bbdb9f7-0cbe-44f2-9d96-ef2623ad2aad" name="Changes" comment="add:improve">
+    <list default="true" id="1bbdb9f7-0cbe-44f2-9d96-ef2623ad2aad" name="Changes" comment="add:advance improve">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/chatroom/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/chatroom/main.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/chatroom.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/chatroom.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/global/init.go" beforeDir="false" afterPath="$PROJECT_DIR$/global/init.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/global/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/global/config.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logic/broadcast.go" beforeDir="false" afterPath="$PROJECT_DIR$/logic/broadcast.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logic/message.go" beforeDir="false" afterPath="$PROJECT_DIR$/logic/message.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logic/offline.go" beforeDir="false" afterPath="$PROJECT_DIR$/logic/offline.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logic/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/logic/user.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/handle.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/handle.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/home.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/home.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/websocket.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/websocket.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/template/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/template/home.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,6 +52,7 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/logic/sensitive.go" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/server/websocket.go" root0="FORCE_HIGHLIGHTING" />
     <setting file="file:///usr/local/go/src/strings/strings.go" root0="SKIP_INSPECTION" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -145,7 +148,8 @@
     <MESSAGE value="add:sensitive filter and more detail" />
     <MESSAGE value="add:save the history message and more details" />
     <MESSAGE value="add:improve" />
-    <option name="LAST_COMMIT_MESSAGE" value="add:improve" />
+    <MESSAGE value="add:advance improve" />
+    <option name="LAST_COMMIT_MESSAGE" value="add:advance improve" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

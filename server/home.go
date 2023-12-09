@@ -28,7 +28,7 @@ func UserListHandleFunc(writer http.ResponseWriter, request *http.Request) {
 	writer.WriteHeader(http.StatusOK)
 
 	userList := logic.BroadCaster.UserList()
-	users, err := json.Marshal(&userList)
+	users, err := json.Marshal(userList)
 	if err != nil {
 		fmt.Fprint(writer, `[]`)
 	} else {
