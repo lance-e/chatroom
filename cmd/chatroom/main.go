@@ -1,11 +1,16 @@
 package main
 
 import (
+	"chatroom/global"
 	"chatroom/server"
 	"fmt"
 	"log"
 	"net/http"
 )
+
+func init() {
+	global.Init()
+}
 
 func main() {
 	var (
@@ -24,5 +29,5 @@ func main() {
 
 	server.RegisterHandle()
 
-	log.Fatal(http.ListenAndServe("localhost"+addr, nil))
+	log.Fatal(http.ListenAndServe(addr, nil))
 }

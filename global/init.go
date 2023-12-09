@@ -6,10 +6,6 @@ import (
 	"sync"
 )
 
-func init() {
-	Init()
-}
-
 var once = sync.Once{}
 
 func Init() {

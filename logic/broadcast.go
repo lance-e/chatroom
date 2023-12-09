@@ -1,5 +1,7 @@
 package logic
 
+import "log"
+
 // broadCast 广播器
 type broadCaster struct {
 	//所有聊天室用户
@@ -10,9 +12,13 @@ type broadCaster struct {
 	enteringChanel chan *User
 	leavingChanel  chan *User
 	messageChanel  chan *Message
-
+	//判断用户昵称是否能够进入聊天室
 	checkUserChanel      chan string //接收昵称，方便广播器无锁判断用户名是否存在
 	checkUserCanInChanel chan bool   //用来回传用户名是否存在
+
+	//获取用户列表
+	requestUserListChanel chan struct{} //负责接受请求信号
+	userListChanel        chan []*User
 }
 
 var MessageQueueLen = 10
@@ -36,14 +42,14 @@ func (b *broadCaster) Start() {
 		case user := <-b.enteringChanel:
 			//新用户进入
 			b.users[user.NickName] = user
-			b.sendUserList()
+
 			OfflineProcessor.Send(user)
 		case user := <-b.leavingChanel:
 			//用户离开
 			delete(b.users, user.NickName)
 			//避免goroutine泄露
-			b.CloseMessageChanel()
-			b.sendUserList()
+			user.CloseMessageChanel()
+
 		case msg := <-b.messageChanel:
 			//给所有用户发送消息
 			for _, user := range b.users {
@@ -56,22 +62,31 @@ func (b *broadCaster) Start() {
 			OfflineProcessor.Save(msg)
 		case nickname := <-b.checkUserChanel:
 			_, ok := b.users[nickname]
-			if !ok {
+			if ok {
 				b.checkUserCanInChanel <- false
 			} else {
 				b.checkUserCanInChanel <- true
 			}
+		case <-b.requestUserListChanel:
+			users := make([]*User, 10)
+			for _, user := range b.users {
+				users = append(users, user)
+			}
+			b.userListChanel <- users
 		}
 	}
 
 }
-func (b *broadCaster) CanEnterRoom(name string) bool {
-	b.checkUserChanel <- name
+func (b *broadCaster) CanEnterRoom(nickname string) bool {
+	b.checkUserChanel <- nickname
 	return <-b.checkUserCanInChanel
 }
 
 // BroadCast 用于广播信息
 func (b *broadCaster) BroadCast(msg *Message) {
+	if len(b.messageChanel) > MessageQueueLen {
+		log.Println("message queue is full")
+	}
 	b.messageChanel <- msg
 }
 func (b *broadCaster) UserEntering(user *User) {
@@ -79,4 +94,8 @@ func (b *broadCaster) UserEntering(user *User) {
 }
 func (b *broadCaster) UserLeaving(user *User) {
 	b.leavingChanel <- user
+}
+func (b *broadCaster) UserList() []*User {
+	b.requestUserListChanel <- struct{}{}
+	return <-b.userListChanel
 }

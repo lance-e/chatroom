@@ -2,6 +2,8 @@ package server
 
 import (
 	"chatroom/global"
+	"chatroom/logic"
+	"encoding/json"
 	"fmt"
 	"html/template"
 	"net/http"
@@ -19,4 +21,17 @@ func homeHandleFunc(writer http.ResponseWriter, request *http.Request) {
 		return
 	}
 
+}
+
+func UserListHandleFunc(writer http.ResponseWriter, request *http.Request) {
+	writer.Header().Add("content-type", "application/json")
+	writer.WriteHeader(http.StatusOK)
+
+	userList := logic.BroadCaster.UserList()
+	users, err := json.Marshal(&userList)
+	if err != nil {
+		fmt.Fprint(writer, `[]`)
+	} else {
+		fmt.Fprint(writer, string(users))
+	}
 }

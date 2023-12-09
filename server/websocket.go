@@ -9,13 +9,14 @@ import (
 
 func websocketHandleFunc(writer http.ResponseWriter, request *http.Request) {
 
-	//新用户进入，在协议升级之前，把用户名拿到
+	//新用户进入，在协议升级之前，把用户信息拿到
 	nickname := request.FormValue("nickname")
+	token := request.FormValue("token")
 
 	//将连接升级为websocket连接，
 	ws := websocket.Upgrader{
 		CheckOrigin: func(r *http.Request) bool {
-			return false
+			return true
 		},
 		ReadBufferSize:  1024,
 		WriteBufferSize: 1024,
@@ -37,21 +38,27 @@ func websocketHandleFunc(writer http.ResponseWriter, request *http.Request) {
 	}
 
 	if !logic.BroadCaster.CanEnterRoom(nickname) {
-		log.Printf("昵称 : %s 已存在", nickname)
+		log.Println("昵称已存在", nickname)
 		conn.WriteJSON("该昵称已存在，请更换昵称")
 		conn.Close()
 		return
 	}
 	//创建用户实例
-	user := logic.NewUser(conn, nickname, request.RemoteAddr)
+	userHasToken := logic.NewUser(conn, nickname, token, request.RemoteAddr)
 
 	//开启给用户发送消息的协程
-	go user.SendMessage(request.Context())
+	go userHasToken.SendMessage()
 
 	//给新用户发送欢迎信息
-	user.MessageChanel <- logic.NewWelcomeMessage(nickname)
+	userHasToken.MessageChanel <- logic.NewWelcomeMessage(userHasToken)
+
+	//避免token泄露，在这里进行token处理
+	temUser := *userHasToken
+	user := &temUser
+	user.Token = ""
+
 	//再给所有用户发送新用户进入聊天室的信息
-	msg := logic.NewNoticeMessage(nickname + "进入聊天室")
+	msg := logic.NewUserEnterMessage(user)
 	logic.BroadCaster.BroadCast(msg)
 
 	//将用户加入广播器的用户列表中
@@ -59,10 +66,10 @@ func websocketHandleFunc(writer http.ResponseWriter, request *http.Request) {
 	log.Println("user: `" + nickname + "` joins chat")
 
 	//接收用户消息
-	err = user.ReceiveMessage(request.Context())
+	err = user.ReceiveMessage()
 	// 用户离开,给所有用户发送用户离开聊天室的信息
 	logic.BroadCaster.UserLeaving(user)
-	msg = logic.NewNoticeMessage(nickname + "离开聊天室")
+	msg = logic.NewUserLeaveMessage(user)
 	logic.BroadCaster.BroadCast(msg)
 	log.Println("user: `" + nickname + "` leaves chat")
 	//关闭

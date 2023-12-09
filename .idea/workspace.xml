@@ -4,8 +4,17 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1bbdb9f7-0cbe-44f2-9d96-ef2623ad2aad" name="Changes" comment="add:save the history message and more details">
+    <list default="true" id="1bbdb9f7-0cbe-44f2-9d96-ef2623ad2aad" name="Changes" comment="add:improve">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/chatroom/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/chatroom/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/chatroom.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/chatroom.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/global/init.go" beforeDir="false" afterPath="$PROJECT_DIR$/global/init.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logic/broadcast.go" beforeDir="false" afterPath="$PROJECT_DIR$/logic/broadcast.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logic/message.go" beforeDir="false" afterPath="$PROJECT_DIR$/logic/message.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logic/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/logic/user.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/handle.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/handle.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/home.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/home.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/websocket.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/websocket.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,6 +70,7 @@
   &quot;keyToString&quot;: {
     &quot;DefaultGoTemplateProperty&quot;: &quot;Go File&quot;,
     &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;Go Build.go build chatroom/cmd/chatroom.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
@@ -134,7 +144,8 @@
     <MESSAGE value="add:more details" />
     <MESSAGE value="add:sensitive filter and more detail" />
     <MESSAGE value="add:save the history message and more details" />
-    <option name="LAST_COMMIT_MESSAGE" value="add:save the history message and more details" />
+    <MESSAGE value="add:improve" />
+    <option name="LAST_COMMIT_MESSAGE" value="add:improve" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

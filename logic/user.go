@@ -1,7 +1,6 @@
 package logic
 
 import (
-	"context"
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/base64"
@@ -10,18 +9,21 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/spf13/cast"
 	"github.com/spf13/viper"
+	"io"
 	"regexp"
 	"strings"
 	"sync/atomic"
 	"time"
 )
 
+var globalUID uint32 = 0
+
 type User struct {
-	UID           int           `json:"uid,omitempty"`
-	NickName      string        `json:"nickname,omitempty"`
+	UID           int           `json:"uid"`
+	NickName      string        `json:"nickname"`
 	EnterAt       time.Time     `json:"enter_at"`
-	Addr          string        `json:"addr,omitempty"`
-	MessageChanel chan *Message `json:"_"`
+	Addr          string        `json:"addr"`
+	MessageChanel chan *Message `json:"-"`
 
 	//token 进行用户校验
 	Token string `json:"token"`
@@ -52,18 +54,18 @@ func NewUser(conn *websocket.Conn, nickname string, token string, addr string) *
 		}
 	}
 	if user.UID == 0 {
-		user.UID = int(atomic.AddInt32(&globalUID, 1))
+		user.UID = int(atomic.AddUint32(&globalUID, 1))
 		user.Token = genToken(user.UID, user.NickName)
 		user.IsBool = true
 	}
 	return user
 }
-func (u *User) SendMessage(ctx context.Context) {
+func (u *User) SendMessage() {
 	for msg := range u.MessageChanel {
 		u.Conn.WriteJSON(msg)
 	}
 }
-func (u *User) ReceiveMessage(ctx context.Context) error {
+func (u *User) ReceiveMessage() error {
 	var (
 		receiveMsg map[string]string
 		err        error
@@ -74,12 +76,14 @@ func (u *User) ReceiveMessage(ctx context.Context) error {
 			var closeErr websocket.CloseError
 			if errors.As(err, &closeErr) {
 				return nil
+			} else if errors.Is(err, io.EOF) {
+				return nil
 			}
 			return err
 		}
 		//内容发送到聊天室
-		msg := NewMessage(u, receiveMsg["content"])
-
+		msg := NewMessage(u, receiveMsg["content"], receiveMsg["send_time"])
+		FilterSensitive(msg.Content) //敏感词汇过滤
 		//解析 content ，看看@了谁
 		reg := regexp.MustCompile(`@[^\s@]{4,20}`) //?????????
 		msg.Ats = reg.FindAllString(msg.Content, -1)
@@ -87,6 +91,11 @@ func (u *User) ReceiveMessage(ctx context.Context) error {
 		BroadCaster.BroadCast(msg)
 	}
 
+}
+
+// CloseMessageChanel 用于关闭消息通道,避免goroutine泄露
+func (u *User) CloseMessageChanel() {
+	close(u.MessageChanel)
 }
 
 // genToken 生成token

@@ -11,5 +11,6 @@ func RegisterHandle() {
 	go logic.BroadCaster.Start()
 
 	http.HandleFunc("/", homeHandleFunc)
+	http.HandleFunc("/userList", UserListHandleFunc)
 	http.HandleFunc("/ws", websocketHandleFunc)
 }
